@@ -1,6 +1,8 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      target: web
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -13,11 +15,12 @@ services:
       timeout: 5s
       retries: 3
 
-  # The daemon. One instance — it is the dot's single thread of consciousness.
+  # The dot's single thread of consciousness.
   daemon:
-    build: .
+    build:
+      context: .
+      target: daemon
     restart: unless-stopped
-    command: ["npx", "tsx", "daemon/dotsd.ts"]
     env_file: .env
     volumes:
       - dots-data:/app/data

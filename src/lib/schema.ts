@@ -1,5 +1,11 @@
--- Dots schema. One file, no server. See src/lib/db.ts.
-
+/**
+ * Dots schema. One SQLite file, no server to run. See db.ts.
+ *
+ * Kept as a TS module rather than a .sql file: the Next standalone build only
+ * traces JS modules, so a runtime file read would find nothing in the
+ * container image.
+ */
+export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS messages (
   id          TEXT PRIMARY KEY,
   project_id  TEXT REFERENCES projects(id) ON DELETE SET NULL,
@@ -59,7 +65,7 @@ CREATE INDEX IF NOT EXISTS idx_events_created ON events(created_at DESC);
 -- Sleep bookkeeping. The dot picks its own wake time; nothing external decides.
 CREATE TABLE IF NOT EXISTS dot_state (
   id                INTEGER PRIMARY KEY CHECK (id = 1),
-  phase             TEXT NOT NULL DEFAULT 'idle'
+  phase             TEXT NOT NULL DEFAULT 'active'
                     CHECK (phase IN ('active','reflecting','sleeping')),
   sleep_until       INTEGER,
   last_reasoning    TEXT NOT NULL DEFAULT '',
@@ -78,3 +84,4 @@ CREATE TABLE IF NOT EXISTS approvals (
   decided_at  INTEGER
 );
 CREATE INDEX IF NOT EXISTS idx_approvals_status ON approvals(status, created_at DESC);
+`;

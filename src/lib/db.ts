@@ -1,7 +1,8 @@
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SCHEMA } from "./schema";
 
 /**
  * One SQLite file is the whole datastore. WAL keeps the daemon's writes from
@@ -20,8 +21,8 @@ function open(): DatabaseSync {
   db.exec("PRAGMA journal_mode = WAL");
   db.exec("PRAGMA foreign_keys = ON");
   db.exec("PRAGMA busy_timeout = 5000");
-  const schema = readFileSync(join(here, "schema.sql"), "utf8");
-  db.exec(schema);
+  mkdirSync(dirname(DB_PATH), { recursive: true });
+  db.exec(SCHEMA);
   return db;
 }
 
