@@ -19,7 +19,8 @@ ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 RUN addgroup -S dots && adduser -S dots -G dots
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+# No public/ copy: the repo has no static assets yet, and git does not track
+# empty directories, so /app/public would not exist in a fresh clone.
 RUN mkdir -p /app/data && chown -R dots:dots /app/data
 USER dots
 EXPOSE 3000
