@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0b0d0c;
+  --panel: #121513;
+  --panel-2: #171b18;
+  --line: #232824;
+  --text: #e8ede9;
+  --muted: #8b968e;
+  --accent: #7ee787;
+  --accent-dim: #2f6f3a;
+  --warn: #f0b429;
+  --danger: #f4685f;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: border-color .15s, background .15s, transform .05s;
+}
+button:hover:not(:disabled) { border-color: var(--accent-dim); }
+button:active:not(:disabled) { transform: translateY(1px); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary {
+  background: var(--accent);
+  color: #06120a;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) { filter: brightness(1.08); }
+button.ghost { background: transparent; }
+button.danger { border-color: #4a2320; color: var(--danger); }
+
+input, textarea {
+  font: inherit;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 100%;
+  resize: none;
+  outline: none;
+}
+input:focus, textarea:focus { border-color: var(--accent-dim); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #222824; border-radius: 6px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: #2e3731; }
+
+@keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+.pulse { animation: pulse 2s ease-in-out infinite; }
+
+@keyframes rise { from { opacity: 0; transform: translateY(4px) } to { opacity: 1; transform: none } }
+.rise { animation: rise .18s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse, .rise { animation: none; }
+}
